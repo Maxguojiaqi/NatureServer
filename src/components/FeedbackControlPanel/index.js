@@ -549,7 +549,7 @@ export default function FeedbackControlPanel() {
         if (
           (el.req && el.id == "field-markup" && (!el.value || el.value == '' || el.value == 'null'))
           ||
-          (el.req && el.id != "additional-field-removalreason" && ( el.value == '' || el.value == 'null'))
+          (el.req && el.id != "additional-field-removalreason" && ( !el.value || el.value == '' || el.value == 'null'))
           || (el.req && el.id == "additional-field-removalreason" && (fieldMarkupVal == 'R') && (!el.value || el.value == '' || el.value == 'null'))
         ) enable = false;
       });
@@ -672,7 +672,11 @@ export default function FeedbackControlPanel() {
 
     container.addEventListener('change', function (event) {
       if (!(event && event.target && event.target.id)) return;
+      feedbackObjects.map(el => {
+        if (el.id == event.target.id) {
+          el.value = event.target.value}})
       if (event.target.id != "field-markup") return;
+      // update the 'field-markup' value
 
       var selValue = event.srcElement.value;
       var removeReason = document.getElementById('removeReason');
