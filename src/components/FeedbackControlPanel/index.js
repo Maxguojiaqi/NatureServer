@@ -672,9 +672,15 @@ export default function FeedbackControlPanel() {
 
     container.addEventListener('change', function (event) {
       if (!(event && event.target && event.target.id)) return;
+      // ----------------------------------------------------
+      // below section is to handle IE not listening 'input'
+      // Making sure drop down could also control the enable/disable button
       feedbackObjects.map(el => {
         if (el.id == event.target.id) {
           el.value = event.target.value}})
+          enableSaveButton();
+          enableSaveMSButton();
+      // ----------------------------------------------------
       if (event.target.id != "field-markup") return;
       // update the 'field-markup' value
 
@@ -709,8 +715,6 @@ export default function FeedbackControlPanel() {
       else {
         removeReason.innerHTML = '';
       }
-
-
     });
 
   };
