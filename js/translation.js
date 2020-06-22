@@ -38,7 +38,7 @@ Your species reviews will be kept in a database to support the EBAR-KBA project.
             "range_version": "Range Version:",
             "stage": "Stage:",
             "species_info": "Species Information:",
-            "metadata": "Metadata",
+            "metadata": "Metadata:",
             "rangescope": "Range Map Scope:",
             "search_add": "Search/Add Data",
             "search_by_location": "Search by location",
