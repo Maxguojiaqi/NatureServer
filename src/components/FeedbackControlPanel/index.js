@@ -299,7 +299,7 @@ export default function FeedbackControlPanel() {
 
         <strong>${$.i18n('ter_proportion')}:</strong> ${terrProp.toFixed(1)}%    <br>  
         <strong>${$.i18n('presence')}:</strong> ${presence}  <br>     
-        <strong>${$.i18n('metadata')}:</strong> ${hucNotes} <br>     
+        <strong>${$.i18n('metadata')}</strong> ${hucNotes} <br>     
 
       </p>  
     </div>
@@ -547,9 +547,9 @@ export default function FeedbackControlPanel() {
       var fieldMarkupVal = (feedbackObjects.find(el => { return el.id == "field-markup"; })).value;
       feedbackObjects.map(el => {
         if (
-          (el.req && el.id == "field-markup" && (el.value == '' || el.value == 'null'))
+          (el.req && el.id == "field-markup" && (!el.value || el.value == '' || el.value == 'null'))
           ||
-          (el.req && el.id != "additional-field-removalreason" && (!el.value || el.value == '' || el.value == 'null'))
+          (el.req && el.id != "additional-field-removalreason" && ( el.value == '' || el.value == 'null'))
           || (el.req && el.id == "additional-field-removalreason" && (fieldMarkupVal == 'R') && (!el.value || el.value == '' || el.value == 'null'))
         ) enable = false;
       });
