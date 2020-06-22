@@ -547,7 +547,7 @@ export default function FeedbackControlPanel() {
       var fieldMarkupVal = (feedbackObjects.find(el => { return el.id == "field-markup"; })).value;
       feedbackObjects.map(el => {
         if (
-          (el.req && el.id == "field-markup" && (!el.value || el.value == '' || el.value == 'null'))
+          (el.req && el.id == "field-markup" && (el.value == '' || el.value == 'null'))
           ||
           (el.req && el.id != "additional-field-removalreason" && (!el.value || el.value == '' || el.value == 'null'))
           || (el.req && el.id == "additional-field-removalreason" && (fieldMarkupVal == 'R') && (!el.value || el.value == '' || el.value == 'null'))
