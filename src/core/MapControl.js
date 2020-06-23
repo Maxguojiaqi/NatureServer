@@ -282,6 +282,18 @@ const MapControl = function ({
         }, {
           fieldName: "originalgeometrytype",
           label: "Original Geometry Type"
+        },
+        {
+          fieldName: "uri",
+          label: "URI"
+        },
+        {
+          fieldName: "datasetsourceuniqueid",
+          label: "DatasetSourceUniqueID"
+        },
+        {
+          fieldName: "eorank",
+          label: "EORank"
         }]
       }],
       expressionInfos: [{

@@ -110,7 +110,8 @@ module.exports = {
     { "attributes": { "artext": "Present", "arcode": 3 } },
     { "attributes": { "artext": "Presence Expected", "arcode": 4 } },
     { "attributes": { "artext": "Historical", "arcode": 5 } },
-    { "attributes": { "artext": "Unrestricted Range Map Inputs", "arcode": 6 } }
+    { "attributes": { "artext": "Unrestricted Range Map Inputs", "arcode": 6 } },
+    { "attributes": { "artext": "Species", "arcode": 7 } }
   ],
 
   PRESENCE: [
