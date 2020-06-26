@@ -286,7 +286,9 @@ export default function FeedbackControlPanel() {
     }
 
     let outputHtml = ``;
-
+    // get the Species dropdown selected value from the dom 
+    let e = document.getElementById('speciesSelector')
+    let selectedSpecies = e.options[e.selectedIndex].innerText
     if (!state.isMultiSelection) {
       outputHtml += `<div class='flex-container'>
     <div class='inline-block' id="curEcoSelected">
@@ -298,8 +300,9 @@ export default function FeedbackControlPanel() {
         <strong>${$.i18n('ter_area')}:</strong> ${terrArea} km&sup2;<br>
 
         <strong>${$.i18n('ter_proportion')}:</strong> ${terrProp.toFixed(1)}%    <br>  
-        <strong>${$.i18n('presence')}:</strong> ${presence}  <br>     
-        <strong>${$.i18n('metadata')}</strong> ${hucNotes} <br>     
+        <strong>${$.i18n('presence')}:</strong> ${presence}  <br>
+        <strong>${$.i18n('species')}:</strong> ${selectedSpecies} <br>     
+        <strong>${$.i18n('metadata')}</strong> ${hucNotes} <br>
 
       </p>  
     </div>

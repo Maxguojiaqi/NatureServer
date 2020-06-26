@@ -74,6 +74,8 @@ const MapControl = function ({
     //console.log("done init: map view")
   };
 
+
+  
   const initMapView = () => {
     esriLoader
       .loadModules(["esri/views/MapView", "esri/WebMap", "esri/config"], esriLoaderOptions)
@@ -121,6 +123,24 @@ const MapControl = function ({
       });
   };
 
+  const initCoordinateConversion = mapView =>{
+    esriLoader
+    .loadModules(["esri/widgets/CoordinateConversion"], esriLoaderOptions)
+    .then(([CoordinateConversion]) => {
+      // const layerlist = new LayerList({
+      //   container: config.DOM_ID.layerListDiv,
+      //   view: mapView
+      // });
+
+      const ccWidget = new CoordinateConversion({
+        view: mapView
+      });
+      mapView.ui.add(ccWidget, "bottom-left");
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  }
 
   const initBaseMapLayer = () => {
     esriLoader
@@ -408,7 +428,6 @@ const MapControl = function ({
   }
 
 
-
   const initBasemapGallery = view => {
     esriLoader
       .loadModules(
@@ -518,6 +537,8 @@ const MapControl = function ({
     initSearch(mapView);
 
     initLayerList(mapView);
+
+    // initCoordinateConversion(mapView);
 
     initBaseMapLayer();
   };
