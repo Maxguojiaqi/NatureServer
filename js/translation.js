@@ -81,7 +81,7 @@ jQuery(function ($) {
             <br> <br>
             En utilisant cet outil, vous accéderez à des informations basées sur des emplacements de certaines espèces,  y compris les espèces rares and sujettes à la persécution. Vous acceptez d'utiliser ces informations uniquement aux fins de l'examen des cartes de répartition du projet CAARBE. Veuillez contacter le projet CAARBE-KBA par courriel indiqué ci-dessous pour suggérer des réviseurs supplémentaires.
             <br> <br>
-            Les cartes des aires de répartition seront publiées sans frais par NatureServe Canada (<a href="http://www.natureserve.ca" target="_blank"> http://www.natureserve.ca) </a>, NatureServe Explorer
+            Les cartes des aires de répartition seront publiées sans frais par NatureServe Canada (<a href="http://www.natureserve.ca" target="_blank">http://www.natureserve.ca)</a>, NatureServe Explorer
             et partenaires.
             <br> <br>
             Cette application utilise des cookies pour mémoriser les sélections de l'interface de l’utilisateur.

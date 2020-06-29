@@ -233,5 +233,5 @@ module.exports = {
     layerListDiv: "layerListDiv"
   },
   i18n: true,
-  isMultiSelection: true
+  isMultiSelection: false
 };
