@@ -151,11 +151,27 @@ jQuery(function ($) {
 
 
 function translation(event) {
+
+    if (event ===undefined)
+    {   // acquire language cookie value at this location
+        if (document.cookie.split(';').some((item) => item.trim().startsWith('language='))) 
+        {
+          const languageCookieValue = document.cookie.split('; ').find(row => row.startsWith('language')).split('=')[1];
+          $.i18n({locale: languageCookieValue});
+          if (languageCookieValue == 'en') document.getElementById('languageSelector').value = 'en'
+          else if ((languageCookieValue == 'fr')) document.getElementById('languageSelector').value = 'fr'
+        }
+    }
+
     if (event && event.target && event.target.value) {
         $.i18n({
             locale: event.target.value
         });
+        // store language cookie value at this location
+        let currentLangauge = document.getElementById('languageSelector').value
+        document.cookie= `language=${currentLangauge}`
     }
+
     $("[data-i18n=welcome]")[0].innerHTML = $.i18n('welcome');
     //$("[data-i18n=pre_lang]")[0].innerHTML = $.i18n('pre_lang');
     $("[data-i18n=lang_en]")[0].innerHTML = $.i18n('lang_en');

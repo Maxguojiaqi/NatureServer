@@ -77,7 +77,7 @@ export default function FeedbackControlPanel() {
   // };
 
   const toggleIsMultiSelection = () => {
-    // alert(state.isMultiSelection);
+    alert(state.isMultiSelection);
     state.isMultiSelection = !state.isMultiSelection;
     if (state.isMultiSelection === true) {
       document.getElementById("feedbackControlPanelMultiSelectInfo").style.display = "block";

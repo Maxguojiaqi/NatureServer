@@ -314,7 +314,8 @@ const MapControl = function ({
         {
           fieldName: "eorank",
           label: "EORank"
-        }]
+        }
+      ]
       }],
       expressionInfos: [{
         name: "coordinatesobscured",

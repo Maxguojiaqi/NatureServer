@@ -34,10 +34,13 @@
 
         <!--<span data-i18n="pre_lang">Preferred language: </span>-->
         <div class="text-right">
-          <select class="language" onchange="translation(event)" data-i18n="lang" style="display:none">
-            <option value="en" data-i18n="lang_en">English</option>
-            <option value="fr" data-i18n="lang_fr">French</option>
-          </select>
+          <div data-i18n="lang" style="display:none">
+            <label style="float:left; padding:0.5% 0.5% 0 0">Language/langue:</label>
+            <select id="languageSelector" class="language" onchange="translation(event)" data-i18n="lang" style="display:none">
+              <option value="en" data-i18n="lang_en">English</option>
+              <option value="fr" data-i18n="lang_fr">French</option>
+            </select>
+        </div>
           <btn class="btn btn-large js-accept-terms">
             <span class="padding-left-1 padding-right-1" data-i18n="i_agree">I AGREE </span></btn>
         </div>
