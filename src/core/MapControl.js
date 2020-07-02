@@ -302,19 +302,19 @@ const MapControl = function ({
         }, {
           fieldName: "originalgeometrytype",
           label: "Original Geometry Type"
+        },
+        {
+          fieldName: "uri",
+          label: "URI"
+        },
+        {
+          fieldName: "datasetsourceuniqueid",
+          label: "DatasetSourceUniqueID"
+        },
+        {
+          fieldName: "eorank",
+          label: "EORank"
         }
-        // {
-        //   fieldName: "uri",
-        //   label: "URI"
-        // },
-        // {
-        //   fieldName: "datasetsourceuniqueid",
-        //   label: "DatasetSourceUniqueID"
-        // },
-        // {
-        //   fieldName: "eorank",
-        //   label: "EORank"
-        // }
       ]
       }],
       expressionInfos: [{
@@ -539,7 +539,7 @@ const MapControl = function ({
 
     initLayerList(mapView);
 
-    // initCoordinateConversion(mapView);
+    initCoordinateConversion(mapView);
 
     initBaseMapLayer();
   };

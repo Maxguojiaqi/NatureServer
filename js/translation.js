@@ -174,8 +174,8 @@ function translation(event) {
 
     $("[data-i18n=welcome]")[0].innerHTML = $.i18n('welcome');
     //$("[data-i18n=pre_lang]")[0].innerHTML = $.i18n('pre_lang');
-    $("[data-i18n=lang_en]")[0].innerHTML = $.i18n('lang_en');
-    $("[data-i18n=lang_fr]")[0].innerHTML = $.i18n('lang_fr');
+    // $("[data-i18n=lang_en]")[0].innerHTML = $.i18n('lang_en');
+    // $("[data-i18n=lang_fr]")[0].innerHTML = $.i18n('lang_fr');
     $("[data-i18n=i_agree]")[0].innerHTML = $.i18n('i_agree');
     $("[data-i18n=questions]")[0].innerHTML = $.i18n('questions');
     $("[data-i18n=about]")[0].innerHTML = $.i18n('about');
