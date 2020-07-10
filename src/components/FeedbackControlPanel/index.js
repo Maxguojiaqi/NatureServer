@@ -77,7 +77,7 @@ export default function FeedbackControlPanel() {
   // };
 
   const toggleIsMultiSelection = () => {
-    alert(state.isMultiSelection);
+    // alert(state.isMultiSelection);
     state.isMultiSelection = !state.isMultiSelection;
     if (state.isMultiSelection === true) {
       document.getElementById("feedbackControlPanelMultiSelectInfo").style.display = "block";
@@ -95,6 +95,11 @@ export default function FeedbackControlPanel() {
       try { document.getElementById('additional-field-reference').value = ""; } catch{ }
       try { document.getElementById("field-markup").selectedIndex = "0"; } catch{ }
 
+      let x = document.getElementById("field-markup");
+      let newOption = document.createElement("option");
+      newOption.text = "Remove";
+      newOption.value = "R"
+      x.add(newOption);
     }
     else {
       document.getElementById("feedbackControlPanelMultiSelectInfo").style.display = "none";
@@ -206,7 +211,8 @@ export default function FeedbackControlPanel() {
                     </div>
 
                     <div id="feedbackControlPanelMultiSelectInfo" style="flex;flex-direction:row;display:${state.isMultiSelection ? "block" : "none"};" class="font-size--3 meta">
-                    <span style="color:lightpink">${$.i18n('warning_markup')}</span>
+                      <span style="color:lightpink">${$.i18n('warning_markup')}</span>
+                      <span style="color:lightpink">${$.i18n('warning_markup')}</span>
                        <div>Ecoshape(s):<span id="feedbackControlPanelMSIecoshapes" style="margin-left:5px;"></span></div>
                        <div>${$.i18n('ter_area')}<span id="feedbackControlPanelMSIarea" style="margin-left:5px;"></span></div>
                         <div>${$.i18n('ter_proportion')}<span id="feedbackControlPanelMSIproportion" style="margin-left:5px;"></span></div>

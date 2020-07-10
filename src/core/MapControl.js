@@ -127,10 +127,23 @@ const MapControl = function ({
     esriLoader
     .loadModules(["esri/widgets/CoordinateConversion"], esriLoaderOptions)
     .then(([CoordinateConversion]) => {
-      // const layerlist = new LayerList({
-      //   container: config.DOM_ID.layerListDiv,
-      //   view: mapView
-      // });
+
+      // let cc = new CoordinateConversion();
+
+      // let coordinateFormats = cc.formats.filter((format) => {
+      //   let coordinateNames = ["dd", "ddm", "dms", "utm"]
+      //   if (coordinateNames.includes(format.name)) return format
+      //   return format.name === "dd";
+      //   });
+      // let ddmCoordinateFormat = cc.formats.filter((format) => {
+      //   return format.name === "ddm";
+      //   });
+      // let dmsCoordinateFormat = cc.formats.filter((format) => {
+      //   return format.name === "dms";
+      //   });
+      // let utmCoordinateFormat = cc.formats.filter((format) => {
+      //   return format.name === "utm";
+      //   });
 
       const ccWidget = new CoordinateConversion({
         view: mapView
@@ -274,54 +287,74 @@ const MapControl = function ({
         fieldInfos: [{
           fieldName: "nationalscientificname",
           label: "National Scientific Name"
-        }, {
+        }, 
+        {
           fieldName: "synonymname",
           label: "Synonym Name"
-        }, {
+        }, 
+        {
           fieldName: "datasetsourcename",
-          label: "Data Source Name"
-        }, {
+          label: "Dataset Source Name"
+        },
+        {
+          fieldName: "datasetsourceuniqueid",
+          label: "Dataset Source Unique ID"
+        },
+        {
           fieldName: "datasettype",
           label: "Dataset Type"
-        }, {
+        }, 
+        {
           fieldName: "accuracy",
-          label: "Accuracy",
+          label: "Accuracy (m)",
           format: {
             digitSeparator: true,
             places: 0
           }
-        }, {
+        }, 
+        {
           fieldName: "maxdate",
           label: "Max Date",
           format:{
             dateFormat: "short-date"
           }
-        }, {
-          fieldName: "coordinatesobscured",
-          label: "Coordinates Obscured"
-        }, {
-          fieldName: "originalgeometrytype",
-          label: "Original Geometry Type"
+        }, 
+        // {
+        //   fieldName: "coordinatesobscured",
+        //   label: "Coordinates Obscured"
+        // }, 
+        // {
+        //   fieldName: "originalgeometrytype",
+        //   label: "Original Geometry Type"
+        // },
+        {
+          fieldName: "expression/coordinatesobscuredConvert"
+        },
+        {
+          fieldName: "expression/originalgeometrytypeConvert"
         },
         {
           fieldName: "uri",
           label: "URI"
         },
         {
-          fieldName: "datasetsourceuniqueid",
-          label: "DatasetSourceUniqueID"
-        },
-        {
           fieldName: "eorank",
-          label: "EORank"
+          label: "EO Rank"
         }
       ]
       }],
-      expressionInfos: [{
-        name: "coordinatesobscured",
+      expressionInfos: [
+      {
+        name: "coordinatesobscuredConvert",
         title: "Coordinates Obscured",
-        expression: "$feature.coordinatesobscured" * 5
-      }]
+        expression: "IIf($feature.coordinatesobscured == 1, 'Yes', 'No')"
+      },
+      {
+        name: "originalgeometrytypeConvert",
+        title: "Original Geometry Type",
+        expression: "When($feature.originalgeometrytype == 'Y', 'Polygon', $feature.originalgeometrytype == 'P', 'Point', $feature.originalgeometrytype == 'L', 'Line', 'N/A')"
+      }
+    ]
     }
   };
 
@@ -391,7 +424,7 @@ const MapControl = function ({
           title: "Selection"
         });
 
-        mapView.map.addMany([ ecoPreviewGraphicLayer, ecoPresenceGraphicLayer, ecoShpByStatusGraphicLayer,ecoMultiSelection]);
+        mapView.map.addMany([ecoPreviewGraphicLayer, ecoPresenceGraphicLayer, ecoShpByStatusGraphicLayer,ecoMultiSelection]);
 
       });
   };

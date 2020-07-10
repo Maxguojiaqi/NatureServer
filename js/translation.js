@@ -73,7 +73,8 @@ jQuery(function ($) {
             "close": "Close",
             "species":"Species",
             "submit_warning":"After submit, additional markup and feedback for this range map will not be allowed. Do you want to continue?",
-            "review_sub": "REVIEW SUBMITTED, additional markup and feedback for this range map are not allowed."
+            "review_sub": "REVIEW SUBMITTED, additional markup and feedback for this range map are not allowed.",
+            "visit_NSExplorer" : "go to NatureServe Explorer"
         },
         "fr": {
             "welcome": `
@@ -141,7 +142,8 @@ jQuery(function ($) {
             "close": "Fermé",
             "species":"Espèce",
             "submit_warning":" Après l'envoi, le balisage et les commentaires supplémentaires pour cette carte ne seront pas autorisés. Voulez-vous continuer?",
-            "review_sub": "REVISION SOUMISE, les changements et commentaires supplémentaires pour cette carte ne sont plus autorisés."
+            "review_sub": "REVISION SOUMISE, les changements et commentaires supplémentaires pour cette carte ne sont plus autorisés.",
+            "visit_NSExplorer" : "allez à NatureServe Explorer"
         }
 
     }).done(function () {
