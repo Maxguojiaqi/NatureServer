@@ -95,11 +95,29 @@ export default function FeedbackControlPanel() {
       try { document.getElementById('additional-field-reference').value = ""; } catch{ }
       try { document.getElementById("field-markup").selectedIndex = "0"; } catch{ }
 
+      
+      // add multiple selections dropdown options if hasn't added yet
       let x = document.getElementById("field-markup");
+      let valueArr = []
+
+      for (let i = 0; i< x.options.length; i++)
+      {
+        valueArr.push(x.options[i].value)
+      }
+
       let newOption = document.createElement("option");
-      newOption.text = "Remove";
-      newOption.value = "R"
-      x.add(newOption);
+      if (valueArr.includes('R'))
+      {
+        newOption.text = "Present";
+        newOption.value = "P"
+        x.add(newOption, x.options[1]);
+      }
+      else 
+      {
+        newOption.text = "Remove";
+        newOption.value = "R"
+        x.add(newOption);
+      }
     }
     else {
       document.getElementById("feedbackControlPanelMultiSelectInfo").style.display = "none";
@@ -122,8 +140,10 @@ export default function FeedbackControlPanel() {
       try { document.getElementById('field-comment').value = document.getElementById('field-comment').getAttribute('defaultvalue'); } catch{ }
       try { document.getElementById('additional-field-reference').value = document.getElementById('additional-field-reference').getAttribute('defaultvalue'); } catch{ }
       try { document.getElementById("field-markup").selectedIndex = "0"; } catch{ }
-      //need to clear graphics
-      //defaultvalue
+      // remove the options added for the multi-select
+      let x = document.getElementById("field-markup");
+      if (state.data.isHucInModeledRange) x.remove(1)
+      else x.remove(4)
     }
   };
 
@@ -211,7 +231,6 @@ export default function FeedbackControlPanel() {
                     </div>
 
                     <div id="feedbackControlPanelMultiSelectInfo" style="flex;flex-direction:row;display:${state.isMultiSelection ? "block" : "none"};" class="font-size--3 meta">
-                      <span style="color:lightpink">${$.i18n('warning_markup')}</span>
                       <span style="color:lightpink">${$.i18n('warning_markup')}</span>
                        <div>Ecoshape(s):<span id="feedbackControlPanelMSIecoshapes" style="margin-left:5px;"></span></div>
                        <div>${$.i18n('ter_area')}<span id="feedbackControlPanelMSIarea" style="margin-left:5px;"></span></div>
@@ -318,8 +337,17 @@ export default function FeedbackControlPanel() {
     let range = [];
 
     if (state && state.data) {
-
       range.push({ code: "null", text: "None set", status: true });
+      // if the multi select is turned on, add all options
+      if (state.isMultiSelection)
+      {
+        config.PRESENCE.map(d => {
+          range.push({ code: d.code, text: d.text, status:false });
+        })
+        range.push({ code: "R", text: "Remove", status: false });
+      }
+      else 
+      {
       config.PRESENCE.map(d => {
 
         if (state && state.data && state.data.isHucInModeledRange) {
@@ -345,8 +373,8 @@ export default function FeedbackControlPanel() {
           }
 
         }
-
       });
+
       if (state && state.data && state.data.isHucInModeledRange) {
         if (state.data.markup && state.data.markup.toUpperCase() === "R") {
           range.push({ code: "R", text: "Remove", status: true });
@@ -355,6 +383,7 @@ export default function FeedbackControlPanel() {
           range.push({ code: "R", text: "Remove", status: false });
         }
       }
+    }
     }
 
 

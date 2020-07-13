@@ -48,7 +48,7 @@ jQuery(function ($) {
             "drag_and_drop_msg": `Drag and drop a csv file from Windows Explorer onto the map. File should be formatted with “latitude” and “longitude” columns.`,
             "overall_feedback": "Overall Feedback",
             "multi_sel_title": "Multiple Ecoshapes selected",
-            "warning_markup": "WARNING: existing Markup for the selected Ecoshapes will be replaced on Save.",
+            "warning_markup": "WARNING: existing Markup for the selected Ecoshapes will be replaced on Save. Chosen Markup will only be applied to relevant Ecoshapes",
             "ecoshapes": "Ecoshape(s):",
             "ter_area": "Terrestrial Area",
             "ter_proportion": "Terrestrial Proportion",
