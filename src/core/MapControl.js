@@ -34,8 +34,11 @@ const MapControl = function ({
   let multiSelectionList = [];
   let currentSelectedFeature = null;
   let rangeMapShapes = null;
-
   let largeDrawError = false;
+
+  // handle remove
+  let controlKeyPressed = false;
+  let graphicEcoshapNameKVP = {};
 
 
   // need to attach a completely transparent outline to each presence symbol below, otherwise they draw as full black
@@ -437,6 +440,7 @@ const MapControl = function ({
       if (!ms || ms == "false") {
         ecoMultiSelection.removeAll();
         ecoPreviewGraphicLayer.removeAll();
+        graphicEcoshapNameKVP ={}
       }
 
       queryEcoLayerByMouseEvent(event)
@@ -452,6 +456,20 @@ const MapControl = function ({
         onScaleChange(mapView.scale);
       }
     });
+    // initMapEventHandlers.remove();
+    // mapView.on('key-down', event => {
+    //   if (event.key === 'Control')
+    //   {
+    //     controlKeyPressed = true;
+    //   }
+    // });
+
+    // mapView.on('key-up', event => {
+    //   if (event.key === 'Control')
+    //   {
+    //     controlKeyPressed = fasle;
+    //   }
+    // });
   };
 
   const initMapEventHandlersRemove = () => {
@@ -603,11 +621,10 @@ const MapControl = function ({
                 console.log(err);
               });
 
-
             // remove the graphic from the layer. Sketch adds
             // the completed graphic to the layer by default.
             ecoMultiSelection.remove(event.graphic);
-            initMapEventHandlers();
+            // initMapEventHandlers();
             // use the graphic.geometry to query features that intersect it
             // selectFeatures(event.graphic.geometry);
           }
@@ -620,6 +637,7 @@ const MapControl = function ({
           id: "SketchWidget",
           visible: false
         });
+
       })
       .catch(err => {
         console.log(err);
@@ -675,6 +693,7 @@ const MapControl = function ({
 
         // ecoPreviewGraphicLayer.add(graphicForSelectedEco);
         ecoMultiSelection.add(graphicForSelectedEco);
+        multiSelectionGraphicHandler(graphicForSelectedEco, feature);
         //console.log('ecoMultiSelection.graphics.items.length', ecoMultiSelection.graphics.items.length);
       });
 
@@ -689,6 +708,7 @@ const MapControl = function ({
     if (!ms || ms == "false") {
       multiSelectionList = [];
       multiSelectionList.push(feature);
+      graphicEcoshapNameKVP ={}
     }
     else {
       let existObj = false;
@@ -1051,9 +1071,9 @@ const MapControl = function ({
           geometry: feature.geometry,
           symbol: symbol
         });
-
         ecoPreviewGraphicLayer.add(graphicForSelectedEco);
-        ecoMultiSelection.add(graphicForSelectedEco);
+        // ecoMultiSelection.add(graphicForSelectedEco);
+        multiSelectionGraphicHandler(graphicForSelectedEco, feature);
 
       });
     try {
@@ -1062,6 +1082,35 @@ const MapControl = function ({
     } catch (e) { }
 
   };
+
+  // handle click add and remove graphics from the collection
+  const multiSelectionGraphicHandler = (graphicItem, feature) =>{
+    let existedGraphic = null;
+    let ecoshapename = feature.attributes.ecoshapename;
+    if (ecoshapename in graphicEcoshapNameKVP)
+    {
+      let graphicID = graphicEcoshapNameKVP[ecoshapename]
+      ecoMultiSelection.graphics.items.forEach(element => {
+        if (element.uid === graphicID) existedGraphic = element
+      });
+
+      // remove the element from the feature list and refresh the feedbackcontrol panel
+      multiSelectionList = multiSelectionList.filter(element => element.attributes.ecoshapename != ecoshapename);
+      showMS();
+      // remove the graphics 
+      ecoMultiSelection.remove(existedGraphic);
+      if (ecoMultiSelection.graphics.length == 0) ecoMultiSelection.removeAll();
+      delete graphicEcoshapNameKVP[ecoshapename];
+      clearEcoPreviewGraphicLayer();
+    }
+    else 
+    {
+      ecoMultiSelection.add(graphicItem);
+      graphicEcoshapNameKVP[ecoshapename] = graphicItem.uid
+      // ecoMultiSelection.graphics.items.push(graphicItem);
+    }
+    
+}
 
   const getMultiSelectionList = () => {
     return multiSelectionList;
