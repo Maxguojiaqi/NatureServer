@@ -1,6 +1,6 @@
 "use strict";
 
-import config from "../config";
+import config, { isMultiSelection } from "../config";
 import * as esriLoader from "esri-loader";
 //import hatchRed from "../static/remove.png";
 //import hatchBlack from "../static/add.png";
@@ -8,7 +8,7 @@ import * as esriLoader from "esri-loader";
 const Promise = require("es6-promise").Promise;
 
 const esriLoaderOptions = {
-  url: "https://js.arcgis.com/4.10"
+  url: "https://js.arcgis.com/4.16"
 };
 
 const MapControl = function ({
@@ -37,7 +37,7 @@ const MapControl = function ({
   let largeDrawError = false;
 
   // handle remove
-  let controlKeyPressed = false;
+  let originalFeature = null;
   let graphicEcoshapNameKVP = {};
 
 
@@ -428,7 +428,8 @@ const MapControl = function ({
         });
 
         mapView.map.addMany([ecoPreviewGraphicLayer, ecoPresenceGraphicLayer, ecoShpByStatusGraphicLayer,ecoMultiSelection]);
-
+        // only initialize the sketch when all the layers are ready to use.
+        initSketch(mapView);
       });
   };
 
@@ -456,20 +457,6 @@ const MapControl = function ({
         onScaleChange(mapView.scale);
       }
     });
-    // initMapEventHandlers.remove();
-    // mapView.on('key-down', event => {
-    //   if (event.key === 'Control')
-    //   {
-    //     controlKeyPressed = true;
-    //   }
-    // });
-
-    // mapView.on('key-up', event => {
-    //   if (event.key === 'Control')
-    //   {
-    //     controlKeyPressed = fasle;
-    //   }
-    // });
   };
 
   const initMapEventHandlersRemove = () => {
@@ -576,8 +563,6 @@ const MapControl = function ({
     console.log('mapView is ready...');
     initMapEventHandlers();
 
-    initSketch(mapView);
-
     initBasemapGallery(mapView);
 
     initReferenceLayers(mapView);
@@ -597,12 +582,13 @@ const MapControl = function ({
 
   const initSketch = view => {
     esriLoader
-      .loadModules(["esri/widgets/Sketch"], esriLoaderOptions)
-      .then(([Sketch]) => {
+      .loadModules(["esri/widgets/Sketch", "esri/widgets/Expand"], esriLoaderOptions)
+      .then(([Sketch, Expand]) => {
         const sketchWidget = new Sketch({
           view,
           layer: ecoMultiSelection,
-          id: "SketchWidget"
+          id: "SketchWidget",
+          availableCreateTools : ["polyline", "polygon", "rectangle"]
         });
 
         sketchWidget.on("create", function (event) {
@@ -631,12 +617,21 @@ const MapControl = function ({
         });
 
 
-        view.ui.add(sketchWidget, {
-          position: "bottom-left",
-          index: 0,
-          id: "SketchWidget",
-          visible: false
+        const bgExpand = new Expand({
+          view,
+          content: sketchWidget,
+          id: "SketchWidget"
         });
+
+        mapView.ui.add(bgExpand, "top-left");
+
+
+        // view.ui.add(sketchWidget, {
+        //   position: "bottom-left",
+        //   index: 0,
+        //   id: "SketchWidget",
+        //   visible: false
+        // });
 
       })
       .catch(err => {
@@ -693,7 +688,7 @@ const MapControl = function ({
 
         // ecoPreviewGraphicLayer.add(graphicForSelectedEco);
         ecoMultiSelection.add(graphicForSelectedEco);
-        multiSelectionGraphicHandler(graphicForSelectedEco, feature);
+        multiSelectionHelper(graphicForSelectedEco, feature);
         //console.log('ecoMultiSelection.graphics.items.length', ecoMultiSelection.graphics.items.length);
       });
 
@@ -847,8 +842,12 @@ const MapControl = function ({
   }
 
   const queryEcoLayerByMouseEventOnSuccessHandler = feature => {
-    addPreviewEcoGraphic(feature);
+    // need to store the original feature first
+    const modal = document.getElementById("myModal");
+    var ms = modal.getAttribute('multi_selection');
+    if (ms === "false") this.originalFeature = feature
 
+    addPreviewEcoGraphic(feature);
     if (ecoFeatureOnSelectHandler) {
       ecoFeatureOnSelectHandler(feature);
     }
@@ -1073,7 +1072,7 @@ const MapControl = function ({
         });
         ecoPreviewGraphicLayer.add(graphicForSelectedEco);
         // ecoMultiSelection.add(graphicForSelectedEco);
-        multiSelectionGraphicHandler(graphicForSelectedEco, feature);
+        multiSelectionHelper(graphicForSelectedEco, feature);
 
       });
     try {
@@ -1084,7 +1083,7 @@ const MapControl = function ({
   };
 
   // handle click add and remove graphics from the collection
-  const multiSelectionGraphicHandler = (graphicItem, feature) =>{
+  const multiSelectionHelper = (graphicItem, feature) =>{
     let existedGraphic = null;
     let ecoshapename = feature.attributes.ecoshapename;
     if (ecoshapename in graphicEcoshapNameKVP)
@@ -1101,13 +1100,13 @@ const MapControl = function ({
       ecoMultiSelection.remove(existedGraphic);
       if (ecoMultiSelection.graphics.length == 0) ecoMultiSelection.removeAll();
       delete graphicEcoshapNameKVP[ecoshapename];
+      // since you are clear out the current selected graphic, need to chear the preview graphicLayer
       clearEcoPreviewGraphicLayer();
     }
     else 
     {
       ecoMultiSelection.add(graphicItem);
       graphicEcoshapNameKVP[ecoshapename] = graphicItem.uid
-      // ecoMultiSelection.graphics.items.push(graphicItem);
     }
     
 }
