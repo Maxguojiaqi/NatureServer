@@ -82,6 +82,7 @@ export default function FeedbackControlPanel() {
     if (state.isMultiSelection === true) {
       document.getElementById("feedbackControlPanelMultiSelectInfo").style.display = "block";
       document.getElementsByClassName('esri-sketch')[0].style.display = "block";
+      document.getElementById('sketchWidget').style.display = "block";
       const modal = document.getElementById("myModal");
       modal.setAttribute('multi_selection', 'true');
       try { document.getElementById("fbSaveMS").style.display = "block"; } catch{ }
@@ -122,6 +123,7 @@ export default function FeedbackControlPanel() {
     else {
       document.getElementById("feedbackControlPanelMultiSelectInfo").style.display = "none";
       document.getElementsByClassName('esri-sketch')[0].style.display = "none";
+      document.getElementById('sketchWidget').style.display = "none";
       clearMultiSelectGraphics();
       const modal = document.getElementById("myModal");
       modal.setAttribute('multi_selection', 'false');
@@ -157,7 +159,11 @@ export default function FeedbackControlPanel() {
     try {
       const modal = document.getElementById("myModal");
       var ms = modal.getAttribute('multi_selection');
-      if (ms && ms == "true") { state.isMultiSelection = true; document.getElementsByClassName('esri-sketch')[0].style.display = "block"; }
+      if (ms && ms == "true") { 
+        state.isMultiSelection = true; 
+        document.getElementsByClassName('esri-sketch')[0].style.display = "block"; 
+        document.getElementById('sketchWidget').style.display = "block";
+      }
     }
     catch (e) {
       console.log(e);

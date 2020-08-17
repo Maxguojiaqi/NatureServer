@@ -91,6 +91,7 @@ export default function Controller(props = {}) {
         controllerProps.feedbackManagerOnClose();
         try {
           document.getElementsByClassName('esri-sketch')[0].style.display = "none";
+          document.getElementById('sketchWidget').style.display = "none";
         } catch (e) { }
       },
 

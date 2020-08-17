@@ -616,14 +616,17 @@ const MapControl = function ({
           }
         });
 
+        let sketchContainer = document.createElement("div");
+        sketchContainer.setAttribute("id", "sketchWidget");
+        sketchContainer.style.display = "none";
 
-        const bgExpand = new Expand({
+        const sketchExpand = new Expand({
           view,
           content: sketchWidget,
-          id: "SketchWidget"
+          container: sketchContainer
         });
 
-        mapView.ui.add(bgExpand, "top-left");
+        mapView.ui.add(sketchExpand, "top-left");
 
 
         // view.ui.add(sketchWidget, {
