@@ -622,6 +622,7 @@ const MapControl = function ({
 
         const sketchExpand = new Expand({
           view,
+          expandIconClass: "esri-icon-sketch-rectangle",
           content: sketchWidget,
           container: sketchContainer
         });
