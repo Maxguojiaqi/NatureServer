@@ -37,7 +37,7 @@ const MapControl = function ({
   let largeDrawError = false;
 
   // handle remove
-  let originalFeature = null;
+  let originalFeatureName = '';
   let graphicEcoshapNameKVP = {};
 
 
@@ -588,7 +588,14 @@ const MapControl = function ({
           view,
           layer: ecoMultiSelection,
           id: "SketchWidget",
-          availableCreateTools : ["polyline", "polygon", "rectangle"]
+          availableCreateTools : ["polyline", "polygon", "rectangle"],
+          defaultUpdateOptions : {
+            enableRotation : false,
+            enableScaling  : false,
+            enableZ : false,
+            multipleSelectionEnabled : false,
+            toggleToolOnClick : false
+          }
         });
 
         sketchWidget.on("create", function (event) {
@@ -598,8 +605,8 @@ const MapControl = function ({
           if (event.state === "complete") {
             console.log(event.graphic);
 
-            if (queryEcoLayerByMSMouseEvent)
-              queryEcoLayerByMSMouseEvent(event.graphic.geometry);
+            // if (queryEcoLayerByMSMouseEvent)
+            //   queryEcoLayerByMSMouseEvent(event.graphic.geometry);
 
             queryEcoLayerByMSMouseEvent(event)
               .then(queryEcoLayerByMSMouseEventOnSuccessHandler)
@@ -849,10 +856,10 @@ const MapControl = function ({
     // need to store the original feature first
     const modal = document.getElementById("myModal");
     var ms = modal.getAttribute('multi_selection');
-    if (ms === "false") this.originalFeature = feature
+    if (!ms || ms === "false") originalFeatureName = feature.attributes.ecoshapename
 
     addPreviewEcoGraphic(feature);
-    if (ecoFeatureOnSelectHandler) {
+    if (ecoFeatureOnSelectHandler && (!ms || ms === "false")) {
       ecoFeatureOnSelectHandler(feature);
     }
 
@@ -1092,19 +1099,22 @@ const MapControl = function ({
     let ecoshapename = feature.attributes.ecoshapename;
     if (ecoshapename in graphicEcoshapNameKVP)
     {
-      let graphicID = graphicEcoshapNameKVP[ecoshapename]
-      ecoMultiSelection.graphics.items.forEach(element => {
-        if (element.uid === graphicID) existedGraphic = element
-      });
+      if (ecoshapename != originalFeatureName)
+      {
+        let graphicID = graphicEcoshapNameKVP[ecoshapename]
+        ecoMultiSelection.graphics.items.forEach(element => {
+          if (element.uid === graphicID) existedGraphic = element
+        });
 
-      // remove the element from the feature list and refresh the feedbackcontrol panel
-      multiSelectionList = multiSelectionList.filter(element => element.attributes.ecoshapename != ecoshapename);
-      showMS();
-      // remove the graphics 
-      ecoMultiSelection.remove(existedGraphic);
-      if (ecoMultiSelection.graphics.length == 0) ecoMultiSelection.removeAll();
-      delete graphicEcoshapNameKVP[ecoshapename];
-      // since you are clear out the current selected graphic, need to chear the preview graphicLayer
+        // remove the element from the feature list and refresh the feedbackcontrol panel
+        multiSelectionList = multiSelectionList.filter(element => element.attributes.ecoshapename != ecoshapename);
+        showMS();
+        // remove the graphics 
+        ecoMultiSelection.remove(existedGraphic);
+        if (ecoMultiSelection.graphics.length == 0) ecoMultiSelection.removeAll();
+        delete graphicEcoshapNameKVP[ecoshapename];
+        // since you are clear out the current selected graphic, need to chear the preview graphicLayer
+      }
       clearEcoPreviewGraphicLayer();
     }
     else 
