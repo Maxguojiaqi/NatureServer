@@ -892,7 +892,9 @@ export default function Controller(props = {}) {
     }
   };
 
-  const getOverallFeedback = () => {
+  const getOverallFeedback = async () => {
+    // re-query the database to update the datamodels
+    await queryOverallFeedbacksByUser();
     const species = dataModel.getSelectedSpecies();
 
     const prevFeedbackData = dataModel.getOverallFeedback(species);

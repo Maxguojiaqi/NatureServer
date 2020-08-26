@@ -375,14 +375,14 @@ const initApp = async oauthManager => {
   });
 
   view.init({
-    openOverallBtnOnclick: () => {
+    openOverallBtnOnclick: async () => {
       // const data = controller.getOverallFeedback();
       // view.toggleOverallFeeback(true, data);
 
       view.toggleControlPanel({
         target: view.overallFeedbackControlPanel,
         isVisible: true,
-        data: controller.getOverallFeedback()
+        data: await controller.getOverallFeedback()
       });
     },
     layerOpacitySliderOnUpdate: val => {
