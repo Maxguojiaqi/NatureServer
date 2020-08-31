@@ -757,6 +757,8 @@ const MapControl = function ({
       console.log(features[i]);
       addPreviewEcoGraphicMS(features[i]);
     }
+    // TODO, think of a way to open the feedback panel with multiple features
+    ecoFeatureOnSelectHandler(multiSelectionList[0])
   };
 
   const addPreviewEcoGraphicMS = feature => {
