@@ -590,8 +590,9 @@ const MapControl = function ({
     esriLoader.loadModules([
       "esri/views/draw/Draw",
       "esri/Graphic",
-      "esri/geometry/Polyline"], esriLoaderOptions)
-        .then(([Draw, Graphic, Polyline]) => {
+      "esri/geometry/Polyline",
+      "esri/geometry/Polygon"], esriLoaderOptions)
+        .then(([Draw, Graphic, Polyline, Polygon]) => {
               view.ui.add("line-button", "top-left");
               draw = new Draw({
                   view: view
@@ -608,7 +609,7 @@ const MapControl = function ({
 
 
           // creates and returns an instance of PolyLineDrawAction
-          const action = draw.create("polyline", "freehand");
+          const action = draw.create("polygon", "freehand");
 
           // focus the view to activate keyboard shortcuts for sketching
           view.focus();
@@ -627,12 +628,17 @@ const MapControl = function ({
               }
               if (event.type === "draw-complete") {
 
-                var polyline = new Polyline({
-                  paths: event.vertices,
-                  spatialReference: view.spatialReference
-              });
+              //   var polyline = new Polyline({
+              //     paths: event.vertices,
+              //     spatialReference: view.spatialReference
+              // });
 
-                queryEcoLayerByMSMouseEvent(polyline)
+              var polygon = new Polygon({
+                rings: event.vertices,
+                spatialReference: view.spatialReference
+            });
+
+                queryEcoLayerByMSMouseEvent(polygon)
                 .then(queryEcoLayerByMSMouseEventOnSuccessHandler)
                 .then(view.graphics.removeAll())
                 .then(window.setTimeout(() => {
@@ -708,16 +714,16 @@ const MapControl = function ({
           // a graphic representing the polyline that is being drawn
           const graphic = new Graphic({
               geometry: {
-                  type: "polyline",
-                  paths: vertices,
+                  type: "polygon",
+                  rings: vertices,
                   spatialReference: view.spatialReference
               },
               symbol: {
-                  type: "simple-line", // autocasts as new SimpleFillSymbol
-                  color: [4, 90, 141],
-                  width: 4,
-                  cap: "round",
-                  join: "round"
+                  type: "simple-fill", // autocasts as new SimpleFillSymbol
+                  color: [4, 90, 141, 0.5]
+                  // width: 4,
+                  // cap: "round",
+                  // join: "round"
               }
           });
 
@@ -758,7 +764,7 @@ const MapControl = function ({
       addPreviewEcoGraphicMS(features[i]);
     }
     // TODO, think of a way to open the feedback panel with multiple features
-    ecoFeatureOnSelectHandler(multiSelectionList[0])
+    ecoFeatureOnSelectHandler(multiSelectionList[0], true)
   };
 
   const addPreviewEcoGraphicMS = feature => {
@@ -943,7 +949,7 @@ const MapControl = function ({
 
     addPreviewEcoGraphic(feature);
     if (ecoFeatureOnSelectHandler && (!isInDrawMode)) {
-      ecoFeatureOnSelectHandler(feature);
+      ecoFeatureOnSelectHandler(feature, false);
     }
 
   };

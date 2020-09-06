@@ -887,9 +887,10 @@ export default function FeedbackControlPanel() {
 
   };
 
-  const open = (data = {}) => {
+  const open = (data = {}, isMultiSelect) => {
     initState(data);
-    renderSingleSelect();
+    if (isMultiSelect) renderMultiSelects();
+    else renderSingleSelect();
   };
 
   const close = () => {
