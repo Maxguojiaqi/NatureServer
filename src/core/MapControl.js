@@ -42,7 +42,7 @@ const MapControl = function ({
   // handle new multi-select
   let draw;
   let isInDrawMode = false;
-  // let isBatchSelect = false
+  let deselectClick = false;
 
 
   // need to attach a completely transparent outline to each presence symbol below, otherwise they draw as full black
@@ -463,6 +463,11 @@ const MapControl = function ({
         onScaleChange(mapView.scale);
       }
     });
+
+    mapView.on('key-down', event => {
+      if (event.key === 'Control') deselectClick = true
+  });
+;
   };
 
   const initMapEventHandlersRemove = () => {
